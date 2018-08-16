@@ -2,19 +2,18 @@
     "use strict";
 
     const SizeSelector = (props) => {
-        const sizeOptions = () => {
-            const sizes = window.Inventory.allSizes;
+        const sizeOptions = () => props.sizes.map((num, i) =>
+            <option value={num} key={i}>{num}</option>)
+        const handleChangeSize = (e) => props.onChangeSize(e.target.value)
 
-            return props.sizes.map((num, i) => <option value={num} key={i}>{num}</option>)
-        }
-        const handleChangesize = (e) => {
-            props.onChangeSize(e.target.value)
-        }
         return (
             <div className="field-group">
                 <label htmlFor="size-options">Size:</label>
-                <select defaultValue={props.size} name="sizeOptions" id="size-options"
-                    onChange={handleChangesize}
+                <select
+                    defaultValue={props.defaultSize}
+                    name="sizeOptions"
+                    id="size-options"
+                    onChange={handleChangeSize}
                 >
                     {sizeOptions()}
                 </select>
@@ -23,19 +22,18 @@
     }
 
     const ColorSelector = (props) => {
-        const colorOptions = () => {
-            const colors = window.Inventory.allColors;
+        const colorOptions = () => props.colors.map((name, i) =>
+            <option value={name} key={i}>{name}</option>)
+        const handleChangeColor = (e) => props.onChangeColor(e.target.value)
 
-            return props.colors.map((name, i) => <option value={name} key={i}>{name}</option>)
-        }
-        const handleChangeColor = (e) => {
-            props.onChangeColor(e.target.value)
-        }
         return (
             <div className="field-group">
                 <label htmlFor="color-options">Color:</label>
-                <select defaultValue={props.color} name="colorOptions" id="color-options"
+                <select
+                    name="colorOptions"
+                    id="color-options"
                     onChange={handleChangeColor}
+                    defaultValue={props.defaultColor}
                 >
                     {colorOptions()}
                 </select>
@@ -43,15 +41,23 @@
         )
     }
 
-    const ProductImage = (props) => {
-        return <img src={`./assets/${props.color}.jpg`} alt="product image" />
+    const RefeshButton = (props) => {
+        const handleRefresh = () => props.onRefresh()
+
+        return (
+            <button onClick={handleRefresh}>refresh</button>
+        )
     }
+
+    const ProductImage = (props) => <img src={`./assets/${props.color}.jpg`} alt="product image" />
 
     const PruductCustomizer = createReactClass({
         getInitialState: function () {
             return {
                 color: "red",
-                size: 8,
+                defaultColor: "red",
+                size: 7,
+                defaultSize: 7,
                 sizes: window.Inventory.allSizes,
                 colors: window.Inventory.allColors
             }
@@ -62,12 +68,38 @@
                 sizes: avaiableSizes,
                 color: selectedColor
             })
+
+            if (avaiableSizes.indexOf(this.state.size) === -1) {
+                console.log(
+                    'size', this.state.size, 'not available in color', selectedColor,
+                    'but it is available in size', avaiableSizes[0]
+                );
+                this.setState({ size: avaiableSizes[0] });
+            }
         },
         onChangeSize: function (selectedSize) {
             const availableColors = window.Inventory.bySize[selectedSize];
             this.setState({
                 colors: availableColors
             });
+
+            if (availableColors.indexOf(this.state.color) === -1) {
+                console.log(
+                    'color', this.state.color, 'not available in size', selectedSize,
+                    'but it is available in color', availableColors[0]
+                );
+                this.setState({ color: availableColors[0] });
+            }
+        },
+        onRefresh: function () {
+            this.setState({
+                color: "red",
+                defaultColor: "red",
+                size: 7,
+                defaultSize: 7,
+                sizes: window.Inventory.allSizes,
+                colors: window.Inventory.allColors
+            })
         },
         render: function () {
             return (
@@ -77,13 +109,18 @@
                         <div className="selectors" >
                             < SizeSelector
                                 size={this.state.size}
+                                defaultSize={this.state.defaultSize}
                                 sizes={this.state.sizes}
                                 onChangeSize={this.onChangeSize}
                             />
                             < ColorSelector
                                 color={this.state.color}
+                                defaultColor={this.state.defaultColor}
                                 colors={this.state.colors}
                                 onChangeColor={this.onChangeColor}
+                            />
+                            <RefeshButton
+                                onRefresh={this.onRefresh}
                             />
                         </div>
                     </div>
