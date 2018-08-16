@@ -16,7 +16,7 @@
     }
 
     ReactDOM.render(
-        React.createElement(PruductCustomizer),
+        <PruductCustomizer />,
         document.getElementById('react-root')
     );
 })();
