@@ -2,20 +2,16 @@
     "use strict";
 
     function ProductImage(props) {
-        return React.createElement("img", {
-            src: "./assets/red.jpg",
-            alt: "product image"
-        })
+        return <img src="./assets/red.jpg" alt="product image" />)
     }
 
     function PruductCustomizer(props) {
-        return React.createElement(
-            'div',
-            { className: "customizer" },
-            React.createElement(
-                "div",
-                { className: "product-image" },
-                React.createElement(ProductImage))
+        return (
+            <div className="customizer">
+                <div className="product-image" >
+                    < ProductImage />
+                </div>
+            </div>
         );
     }
 
