@@ -1,33 +1,33 @@
-(function () {
+(() => {
     "use strict";
 
-    function SizeSelector(props) {
-        function sizeOptions() {
-            var sizes = window.Inventory.allSizes;
+    const SizeSelector = (props) => {
+        const sizeOptions = () => {
+            const sizes = window.Inventory.allSizes;
 
             return sizes.map((num, i) => <option value={num} key={i}>{num}</option>)
         }
         return (
             <div className="field-group">
                 <label htmlFor="size-options">Size:</label>
-                <select name="sizeOptions" id="size-options">
+                <select defaultValue={props.size} name="sizeOptions" id="size-options">
                     {sizeOptions()}
                 </select>
             </div>
         )
     }
 
-    function ProductImage(props) {
-        return <img src="./assets/red.jpg" alt="product image" />
+    const ProductImage = (props) => {
+        return <img src={`./assets/${props.color}.jpg`} alt="product image" />
     }
 
-    function PruductCustomizer(props) {
+    const PruductCustomizer = (props) => {
         return (
             <div className="customizer">
                 <div className="product-image" >
-                    < ProductImage color="red" />
+                    < ProductImage color="green" />
                     <div className="selectors" >
-                        < SizeSelector size="7" />
+                        < SizeSelector size={8} />
                     </div>
                 </div>
             </div>
