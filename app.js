@@ -5,7 +5,7 @@
         const sizeOptions = () => {
             const sizes = window.Inventory.allSizes;
 
-            return sizes.map((num, i) => <option value={num} key={i}>{num}</option>)
+            return props.sizes.map((num, i) => <option value={num} key={i}>{num}</option>)
         }
         return (
             <div className="field-group">
@@ -17,22 +17,56 @@
         )
     }
 
+    const ColorSelector = (props) => {
+        const colorOptions = () => {
+            const colors = window.Inventory.allColors;
+
+            return props.colors.map((name, i) => <option value={name} key={i}>{name}</option>)
+        }
+        return (
+            <div className="field-group">
+                <label htmlFor="color-options">Color:</label>
+                <select defaultValue={props.color} name="colorOptions" id="color-options">
+                    {colorOptions()}
+                </select>
+            </div>
+        )
+    }
+
     const ProductImage = (props) => {
         return <img src={`./assets/${props.color}.jpg`} alt="product image" />
     }
 
-    const PruductCustomizer = (props) => {
-        return (
-            <div className="customizer">
-                <div className="product-image" >
-                    < ProductImage color="green" />
-                    <div className="selectors" >
-                        < SizeSelector size={8} />
+    const PruductCustomizer = createReactClass({
+        getInitialState: function () {
+            return {
+                color: "red",
+                size: 8,
+                sizes: window.Inventory.allSizes,
+                colors: window.Inventory.allColors
+            }
+        },
+
+        render: function () {
+            return (
+                <div className="customizer">
+                    <div className="product-image" >
+                        < ProductImage color={this.state.color} />
+                        <div className="selectors" >
+                            < SizeSelector 
+                                size={this.state.size} 
+                                sizes={this.state.sizes} 
+                            />
+                            < ColorSelector 
+                                color={this.state.color} 
+                                colors={this.state.colors} 
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
+    })
 
     ReactDOM.render(
         <PruductCustomizer />,
