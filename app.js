@@ -2,13 +2,16 @@
     "use strict";
 
     function SizeSelector(props) {
+        function sizeOptions() {
+            var sizes = window.Inventory.allSizes;
+
+            return sizes.map((num, i) => <option value={num} key={i}>{num}</option>)
+        }
         return (
             <div className="field-group">
                 <label htmlFor="size-options">Size:</label>
                 <select name="sizeOptions" id="size-options">
-                    <option>7</option>
-                    <option>7.5</option>
-                    <option>9</option>
+                    {sizeOptions()}
                 </select>
             </div>
         )
@@ -22,9 +25,9 @@
         return (
             <div className="customizer">
                 <div className="product-image" >
-                    < ProductImage />
+                    < ProductImage color="red" />
                     <div className="selectors" >
-                        < SizeSelector />
+                        < SizeSelector size="7" />
                     </div>
                 </div>
             </div>
