@@ -91,7 +91,7 @@
                 this.setState({ color: availableColors[0] });
             }
         },
-        onRefresh: function () {
+        onRefresh: function () { 
             this.setState({
                 color: "red",
                 defaultColor: "red",
